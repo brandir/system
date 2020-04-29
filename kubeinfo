@@ -1,0 +1,22 @@
+#!/bin/bash
+# Time-stamp: <2020-04-08 19:59:20 (mellon@macbook) /Users/mellon/projects/kubernetes/kubeinfo>
+
+MINIKUBE_HOME=/Users/mellon/.minikube
+MINIKUBE_DISK=${MINIKUBE_HOME}/machines/minikube/disk.vmdk
+MINIKUBE_DISK_SIZE=$(ls -lSh ${MINIKUBE_DISK} | awk '{print $5}')
+MINIKUBE_CONFIG_JSON=${MINIKUBE_HOME}/profiles/minikube/config.json
+MINIKUBE_CONFIG=${MINIKUBE_HOME}/profiles/minikube
+MINIKUBE_VIRTUALBOX_CONFIG=${MINIKUBE_HOME}/machines/minikube/minikube/minikube.vbox
+
+MINIKUBE_VIRTUALBOX_UUID=$(VBoxManage showvminfo minikube | grep "^UUID" | sed -e 's/ *//' | awk '{print $2}')
+MINIKUBE_STATE=$(VBoxManage showvminfo minikube | grep "^State" | sed -e 's/State://' -e 's/ *//')
+
+echo "+----------------------+"
+echo "| MINIKUBE INFORMATION |"
+echo "+----------------------+"
+
+echo "MINIKUBE_STATE..........: ${MINIKUBE_STATE}"
+echo "MINIKUBE_HOME...........: ${MINIKUBE_HOME}"
+echo "MINIKUBE_VIRTUALBOX_UUID: ${MINIKUBE_VIRTUALBOX_UUID}"
+echo "MINIKUBE_DISK...........: ${MINIKUBE_DISK}"
+echo "MINIKUBE_DISK_SIZE......: ${MINIKUBE_DISK_SIZE}"
