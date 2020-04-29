@@ -1,0 +1,51 @@
+#!/bin/bash
+# Time-stamp: <2020-04-25 13:22:40 (elrond@rivendell) glk>
+# glk - get_latest_kernel
+
+if [ ! -d "linux-stable" ]; then
+   mkdir linux-stable
+fi
+
+if [ ! -f ./latest_kernel ]; then
+   echo "./latest_kernel does not exist. Please fix that first!"
+   exit 1
+else
+   touch ./latest_kernel
+   echo "$(uname -r | cut -f1 -d"-")" > ./latest_kernel
+fi
+
+wget=$(wget --output-document - --quiet https://www.kernel.org/ | grep -A 1 "latest_link")
+wget=${wget##*.tar.xz\">}
+wget=${wget%</a>}
+latest_acknowledged=$(cat ./latest_kernel)
+
+echo "--> Latest kernel version is $latest_acknowledged ($(uname -r))"
+
+#if [ "$wget" == "$latest_acknowledged" ]; then
+if [ -d ./linux-stable/linux-${wget} ]; then
+   echo "--> You have the latest stable kernel downloaded: $wget"
+   exit 0
+fi
+echo "Updated kernel available: $wget, you have the $latest_acknowledged."
+echo "$wget" > ./latest_kernel
+echo "Writing latest kernel available in /etc/latest_kernel."
+echo "Preparing to parse link to latest kernel for wget."
+
+wget=$(wget --output-document - --quiet https://www.kernel.org/ | grep -A 1 "latest_link")
+wget=${wget##*<a href=\"}
+wget=${wget%\">*}
+
+echo "Done parsing."
+cd ./linux-stable
+echo "Changed cwd to ~/linux-stable to download kernel source."
+echo "Downloading, this may take up to 10 minutes."
+
+wget $wget
+
+echo "Finished downloading..."
+echo "Uncompressing the kernel's source."
+tar xvfJ linux-$(cat ../latest_kernel).tar.xz
+echo "Done uncompressing the kernel's source."
+rm linux-$(cat ../latest_kernel).tar.xz
+echo "Done removing the old archive, end of the script."
+cd ..
