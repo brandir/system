@@ -1,0 +1,17 @@
+# README.bpf, created 04/30/2020
+
+# See what's in there with `dpkg -L bpfcc-tools|less`
+
+/usr/sbin/execsnoop-bpfcc
+/usr/sbin/execsnoop-bpfcc -t
+
+bpftrace -e 'tracepoint:syscalls:sys_enter_open { printf("%s %s\n", comm, str(args->filename)); }'
+
+bpftrace -l 'tracepoint:syscalls:sys_enter_open*'
+bpftrace -l 'tracepoint:syscalls:sys_enter_open* { @[probe] = count(); }'
+
+/usr/sbin/opensnoop.bt
+/usr/sbin/opensnoop.bt -xT
+
+tcpdump -d host 127.0.0.1 and port 80      # see BPF instructions for the tcpdump filter expression
+
