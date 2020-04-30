@@ -2,6 +2,12 @@
 
 # See what's in there with `dpkg -L bpfcc-tools|less`
 
+# BPF instructions are documented in the Linux source tree, i.e. /usr/share/doc/linux-doc/Documentation/networking/filter.txt.gz
+# has the details.
+# 
+# The LLVM compiler (http://llvm.org/) supports BPF as compilation target, documentation for the LLVM IR can be found under 
+# https://llvm.org/doxygen/classllvm_1_1IRBuilderBase.html.   
+
 /usr/sbin/execsnoop-bpfcc
 /usr/sbin/execsnoop-bpfcc -t
 
