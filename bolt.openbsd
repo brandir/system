@@ -1,0 +1,62 @@
+# Created 10/22/2019, jgalt@atlas
+# Time-stamp: <2019-12-11 11:42:18 (jgalt@atlas) bolt>
+
+* package management
+
+  pkg_info -Q <pkgname>         # search for a package
+  pkg_add <pkgname>             # install a package
+  pkg_add -u <pkgname>          # update a package
+
+* system update etc
+
+* run level stuff
+
+  rcctl ls all                  # list all running services
+  rcctl enable <service>        # enable <service>
+  rcctl start <service>         # start <service>
+  rcctl stop <service>          # stop <service>
+
+* ntp/date stuff
+
+  rdate -nvp ntp1.amadeus.net   # check date with remote source
+  rdate -nv ntp1.amadeus.net    # set date with remote source
+  ntpctl -sa                    # check for sync'ed ntp date
+
+* pf packet filer
+
+  pfctl -ss                     # show the current state table
+  pfctl -si                     # show filter stats and counters
+  pfctl -sa                     # show everything it can show
+
+* system stuff
+
+  sysctl hw                     # hardware information
+
+* networking
+
+  class a       1st bit always set to zero
+                7 configurable network bits, 0 and 127 not used, 126 networks
+                subnet mask 255.0.0.0 or /8, 8 ones and 24 zeroes
+                #hosts, 3 octets left, 16.777.214 = 2^24 -2
+                class a rule: 1st octet 1-126 and /8 network mask
+
+  class b       1st bit must be a one, 2nd bit must be zero
+                networks from 128-191,
+                subnet mask 255.255.0.0 or /16, 16 ones and 16 zeroes
+                #hosts, 2^14 networks, 16.384 networks, 2^16-2 = 65.534 hosts
+                class b rule: 1st octet 128-191 and /16 network mask
+
+  class c       1st and 2nd bit in 1st octet on, 3rd bit off
+                ip addresses from 192-223 (1st octet number)
+                subnet mask 255.255.255.0 or /24
+                21 configurable network bits, 2^24 = 2.097.152 networks
+                #hosts 2^8-2 = 254 hosts per network
+                class c rule: 1st octet 192-223 and /24 network mask
+
+  nonroutable address class a 10.0.0.0/8
+                      class b 172.16.0.0-172.31.255.255/16
+                      class c 192.168.0.0-192.168.255.255/24
+
+  diagnostic addresses 127.x.x.x
+                       class e 240.0.0.0-254.255.255.255 (experimental)
+                       class d 224.0.0.0-239.255.255.255 (multicast)
