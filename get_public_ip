@@ -1,0 +1,9 @@
+#!/bin/sh
+# Time-stamp: <2019-10-22 14:58:39 (jgalt@atlas) get_public_ip>
+
+logfile=/home/jgalt/log/public_ip.log
+
+d=`date '+%x - %T'`
+ip=`wget -qO - http://wtfismyip.com/text`
+
+echo "${d} - ${ip}" | tee -a ${logfile}
