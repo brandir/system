@@ -1,0 +1,15 @@
+#!/bin/sh
+# Time-stamp: <2020-03-20 10:46:01 (jgalt@atlas) goc>
+# [go] syntax [c]hecker
+
+red=`tput setaf 1`
+green=`tput setaf 2`
+yellow=`tput setaf 3`
+reset=`tput sgr0`
+
+gofmt -e $1 > /dev/null
+if [ $? -eq 0 ]; then
+    echo "${green}--- Syntax OK ---${reset}"
+else
+    echo "${yellow}--- Syntax Error ---${reset}"
+fi
