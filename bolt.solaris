@@ -1,0 +1,106 @@
+# bolt - book of learnt of things
+# created 01/25/2019, jgalt@avalon
+
+# Time-stamp: <2020-05-14 16:56:24 (jgalt@avalon) bolt.solaris>
+
+* Packaage Management Stuff
+
+  pkg search golang             # search for golang
+
+  pkg install golang            # install pkg golang
+
+  pkg list                      # list all installed packages
+  pkg list '*java*8*'           # list java 8 installed
+  pkg list -a '*java*8*'        # list java 8 installable
+
+  pkgchk -l -p /usr/bin/ls      # resolve file to package
+
+* System Maintenance
+
+  svcs                  # list services
+  svcs -a                       # list services
+
+  svcs -l ntp           # list ntp service info
+  svcs -p ntp           # list the processes started by the service
+
+  svcs -xv              # list why something has failed
+  svcs -x ntp           # list log information
+  svcs -xL ntp          # ....
+
+  svcadm clear <service>        # restore <service>
+
+  /usr/sfw/bin/gtar                  # gnu stuff, SUNWgtar
+
+  infocmp -L                         # compare terminal settings
+  dladm show-link                    # show installed nics
+
+  cat /var/adm/wtmpx |/usr/lib/acct/fwtmp |less       # analyze wtmpx
+  cat /var/adm/utmpx |/usr/lib/acct/fwtmp |less       # analyze utmpx
+
+  https://unix.stackexchange.com/questions/456535/cant-create-a-swapfile-for-solaris-11-3
+
+  creating a swapfile:
+      zfs list -t volume
+      swap -l
+      zfs create -V 2G rpool/swap2
+      zfs list -t volume
+      swap -a /dev/zvol/dsk/rpool/swap2
+      swap -l
+
+  prstat -s rss     # physical memory
+  prstat -s size    # virtual memory
+
+  HP Keyboard ' (apostrophe)         Altr+'
+               " (doubel-quote)       Shift+AltGr+"
+
+  /usr/X11/share/X11/xkb/xkbtable.map       # layout types
+
+  netstat -aun
+  netstat -nu -P tcp -v
+
+  nlsadm get-timezone                               # display timezone
+  svccfg -s svc:/system/timezone:default listprop   # display tz property
+
+  kstat -p -n cpu_info | grep state_begin           # boot time in epoch
+  kstat -p -s '*boot*'                              # ... dito
+
+  kstat -p unix:0:system_misc:snaptime | awk '{print $2}'   # uptime in seconds
+
+  psrinfo                              # cpu info, short (gives startup time)
+  psrinfo -pv                          # cpu info
+  psrinfo -v                           # cpu info
+
+  kstat -m cpu_info                    # cpu info, very detailed
+
+  kstat -p unix:0:system_pages:pagestotal # memory total
+  kstat -p unix:0:system_pages:pagesfree  # memory free
+
+  isainfo -b                              # are 32-bit or 64-bit?
+
+* Modular Debugger Stuff (mdb)
+
+  mdb -kw                           # call this way to change kernel parameters
+
+  ::help                            # display help
+  !cmd                              # run shell command
+  ::log outout.log                  # log output to file
+
+  ::msgbuf                          # display message buffer
+  ::status                          # display status
+
+  ::cpuinfo                         # display cpuinfo
+  ::cpuinfo -v                      # ... more verbose
+
+  echo '::walk lock_graph | ::print lock_descriptor_t l_vnode | ::vnode2path' | mdb -k | sort -u    # list of files with file locks
+
+  ::dcmds                           # list dcmds
+  ::walk                            # list walkers
+
+  ::pgrep sshd | ::walk thread | ::findstack        # stacktrace for each thread
+
+  ::ps !grep inet                   # grep inet process
+
+  ::halt -d                         # force a crash dump
+
+  ::memstat                         # memory statistics
+  ::kmastat                         # allocator statistics
