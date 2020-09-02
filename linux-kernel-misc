@@ -6,3 +6,11 @@ KernelPageSize:        4 kB
 MMUPageSize:           4 kB
 
 getconf PAGESIZE => 4096
+
+# Get page information for a process:
+# Useful Documentation:
+# https://www.kernel.org/doc/html/latest/admin-guide/mm/pagemap.html
+# https://elixir.bootlin.com/linux/latest/source/mm/pagewalk.c
+
+cat /proc/<pid>/maps
+ls /proc/<pid>/map_files
