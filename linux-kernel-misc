@@ -1,0 +1,8 @@
+# Get pagesize information
+
+cd /proc/1; grep -i pagesize | head -2 
+Output:
+KernelPageSize:        4 kB
+MMUPageSize:           4 kB
+
+getconf PAGESIZE => 4096
